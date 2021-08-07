@@ -1,0 +1,5 @@
+*.so
+*.o
+pv2x
+pv2x.cfg
+

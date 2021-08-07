@@ -1,4 +1,5 @@
 #include "filelist.h"
+#include <algorithm>
 
 void FileList::init() {
 	// this->files=new vector<string>;

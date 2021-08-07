@@ -1,5 +1,5 @@
-SYSTEM=gp2x
-# SYSTEM=linux
+# SYSTEM=gp2x
+SYSTEM=linux
 
 VERSION=1.3
 

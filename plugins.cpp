@@ -1,4 +1,5 @@
 #include "plugins.h"
+#include <algorithm>
 
 Plugins::Plugins() {
 }
@@ -29,7 +30,7 @@ void Plugins::scan() {
 
 	if (plugins.size()==0) return;
 
-	pluginNames.push_back("Randon");
+	pluginNames.push_back("Random");
 
 	set<string>::iterator iter;
 	string filename;
