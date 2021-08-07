@@ -1,0 +1,86 @@
+---------- The build system:
+
+The build system requires the GNU make utility
+
+Check the file Makefile.setup to change your target platform
+between linux and gp2x.
+
+To compile the source you need the linux gp2x devkit installed
+on its default location with the compiler in your shell path.
+You'll have to change Makefile.setup if you changed the default
+installation of the gp2x devkit.
+
+It should be also possible, to compile the gp2x binaries under
+Windows, if you have GNU make installed and the gp2x devkit
+compiler in the commandline path.
+
+If you successfully built a plugin on windows, please write
+some documentation or howto to help other users.
+
+In Toplevel:
+
+make - builds everything
+make clean - clean up. you'll have to do this anytime you
+             change the target platform
+make dist - build a clean environment for distribution,
+            including archive files. only works for target
+	    gp2x
+make distclean - remove all from dist build
+
+
+
+---------- How to make a plugin:
+
+In the directory plugins, there are the sources for plugins.
+The easyest is to have a look at the default plugins, i have
+tried to document them.
+
+You need to include pv2xplugin.h
+
+Just create your *.cpp file in the plugins directory, it should
+be compiled in automatically on next call to 'make'
+
+You can use a existing plugin as template.
+
+You'll need to define 2 functions:
+
+pv2x_pluginName();
+
+This function has to return a char* pointer of the plugin name
+that is displayed in the user interface. The string should be a
+short descriptive name in english language
+
+pv2x_fade(SDL_Surface *screen, SDL_Surface *src, SDL_Surface *dst);
+
+In this function you will perform the fade.
+
+The parameters are:
+
+screen - the video screen surface
+src - the source surface, being still displayed when plugin gets control
+dst - the destination surface
+
+You should always keep the following in mind:
+
+- Use getPluginTimerValue(int max) to get a value which represents the maximum
+  of time for your effect.
+
+  For example, if you do a effect, thats runs along the screen width, call it
+  with getPluginTimerValue(screen->w).
+
+  See example plugins on how to use
+
+- Every cycle check with a call to pluginMustExit() if the user has hit any
+  keys needing the plugin to exit.
+
+- All surfaces are 16 bit surfaces.
+
+
+---------- Common mistakes, performed by me quite some often:
+
+- pv2x has to be started from its base directory. if you start it out of
+  'plugins' or anywhere else, it will crash
+
+- Always free any surfaces and pointers you create, as your plugin is called
+  from scratch every fade, you'll eat up memory pretty quick. But don't free
+  screen, src and dst.
