@@ -7,6 +7,7 @@ INSTALLDIR=dev
 
 TARGETGP2X=	pv2x.gpe
 TARGETLINUX=	pv2x
+TARGETMIYOO=	pv2x-miyoo
 
 OBJ=	filelistrandomizer.o \
 	pv2xplugin.o \
@@ -23,7 +24,7 @@ OBJ=	filelistrandomizer.o \
 	$(CPP) -o $@ -Wall $(DEBUG) $(CFLAGS) -c $<
 
 all:$(OBJ) allplugins
-	$(CPP) -o $(TARGET) $(LDFLAGS) $(OBJ)
+	$(CPP) -o $(TARGET) $(OBJ) $(LDFLAGS)
 
 allplugins:
 	$(MAKE) -C plugins

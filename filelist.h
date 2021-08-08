@@ -10,7 +10,11 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef MIYOO
+#include <unistd.h>
+#else
 #include <sys/unistd.h>
+#endif
 #include <dirent.h>
 #include <SDL.h>
 

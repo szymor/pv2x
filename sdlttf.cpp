@@ -11,6 +11,9 @@ SDLTTF::SDLTTF(std::string fontfile, int pointSize) {
 #ifdef LINUX
 	this->renderMode=TEXTMODE_SHADED;
 #endif
+#ifdef MIYOO
+	this->renderMode=TEXTMODE_SHADED;
+#endif
 	this->font=NULL;
 	this->setForegroundColor(0xff,0xff,0xff);
 	this->setBackgroundColor(0,0,0);

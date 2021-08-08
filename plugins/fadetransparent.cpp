@@ -3,7 +3,7 @@
 
 // this is the name your plugin appears in the user interface
 extern "C" char *pv2x_pluginName() {
-	return "Fade transpdstarent";
+	return "Fade transparent";
 }
 
 // this is where your fade effect starts

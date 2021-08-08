@@ -64,6 +64,10 @@ int main (int argc, char **argv) {
 #ifdef GP2X
 	string fileDir="/mnt/sd";
 #endif
+
+#ifdef MIYOO
+	string fileDir="/mnt";
+#endif
 	SDLTTF *ttf=new SDLTTF(FONT,12);
 	ttf->setForegroundColor(255,255,0);
 
