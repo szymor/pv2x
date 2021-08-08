@@ -32,7 +32,7 @@ allplugins:
 clean:
 	$(MAKE) -C plugins clean
 	rm -f $(OBJ)
-	rm -f $(TARGETGP2X) $(TARGETLINUX)
+	rm -f $(TARGETGP2X) $(TARGETLINUX) $(TARGETMIYOO)
 
 distclean:clean
 	rm -rf dist

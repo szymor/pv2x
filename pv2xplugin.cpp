@@ -23,10 +23,16 @@ int pluginMustExit() {
 	if (SDL_PeepEvents(&event, 1, SDL_PEEKEVENT, SDL_EVENTMASK(SDL_KEYDOWN)|SDL_EVENTMASK(SDL_JOYBUTTONDOWN)|SDL_EVENTMASK(SDL_QUIT))) {
 		if (event.type==SDL_QUIT) return 1;
 		if (
+#ifdef MIYOO
+				( event.key.keysym.sym == SDLK_RETURN ) ||
+				(event.key.keysym.sym == SDLK_ESCAPE) ||
+				(event.key.keysym.sym == SDLK_RCTRL)
+#else
 				( (event.key.keysym.sym == SDLK_c) && (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) ) ||
 				( event.key.keysym.sym == SDLK_RETURN ) ||
 				( event.jbutton.button == VK_SELECT ) ||
 				( event.jbutton.button == VK_START )
+#endif
 		) {
 			return 1;
 		}

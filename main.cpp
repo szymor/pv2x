@@ -156,14 +156,23 @@ int main (int argc, char **argv) {
 				case SDL_KEYDOWN:
 				case SDL_JOYBUTTONDOWN:
 					if (
+#ifdef MIYOO
+							(event.key.keysym.sym == SDLK_ESCAPE) ||
+							(event.key.keysym.sym == SDLK_RCTRL)
+#else
 							( (event.key.keysym.sym == SDLK_c) && (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) ) ||
 							( event.jbutton.button == VK_SELECT )
+#endif
 					   ) {
 						done = 1;
 					}
 					if (
+#ifdef MIYOO
+							(event.key.keysym.sym==SDLK_RETURN)
+#else
 							(event.key.keysym.sym==SDLK_RETURN) ||
 							(event.jbutton.button == VK_START)
+#endif
 					   ) {
 						do {
 							config=configDialog(config);
