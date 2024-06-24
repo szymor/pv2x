@@ -41,7 +41,7 @@ distclean:clean
 dist:all
 	mkdir -p dist/pv2x-$(VERSION)/plugins
 	mkdir -p dist/pv2x-$(VERSION)/doc
-	cp $(TARGETGP2X) dist/pv2x-$(VERSION)
+	cp $(TARGET) dist/pv2x-$(VERSION)
 	cp Vera.ttf dist/pv2x-$(VERSION)
 	cp pv2x.png dist/pv2x-$(VERSION)
 	cp README dist/pv2x-$(VERSION)
