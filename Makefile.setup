@@ -1,6 +1,6 @@
 # SYSTEM=gp2x
-# SYSTEM=linux
-SYSTEM=miyoo
+ SYSTEM?=linux
+# SYSTEM=miyoo
 
 VERSION=1.3
 
@@ -22,7 +22,7 @@ ifeq ($(SYSTEM),linux)
 endif
 ifeq ($(SYSTEM),miyoo)
 	CPP=arm-linux-g++
-	SYSROOT=/opt/miyoo/arm-buildroot-linux-musleabi/sysroot
+	SYSROOT?=/opt/miyoo/arm-buildroot-linux-musleabi/sysroot
 	INCBASE=$(SYSROOT)/usr/include
 	LIBBASE=$(SYSROOT)/usr/lib
 	DEFINE=MIYOO
