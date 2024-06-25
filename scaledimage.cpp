@@ -1,4 +1,5 @@
 #include "scaledimage.h"
+#include "defines.h"
 
 ScaledImage::ScaledImage(std::string filename, int rotateMode) {
 	this->image=NULL;
@@ -12,6 +13,9 @@ ScaledImage::ScaledImage(std::string filename, int rotateMode) {
 		this->loadError=1;
 		return;
 	}
+	
+	if ((tmpload->w==SCREEN_WIDTH && tmpload->h<=SCREEN_HEIGHT) || (tmpload->h==SCREEN_HEIGHT && tmpload->w<=SCREEN_WIDTH))
+		this->isScaled=0;
 	
 	SDL_Surface *tmp=sdlCreateSurface(tmpload->w,tmpload->h);
 	sdlLock(tmp);
@@ -73,7 +77,7 @@ ScaledImage::~ScaledImage() {
 void ScaledImage::init() {
 	this->image=NULL;
 	this->scaledImage=NULL;
-	this->isScaled=0;
+	this->isScaled=1;
 	this->loadError=0;
 }
 
@@ -84,7 +88,6 @@ void ScaledImage::scale(double factor, double angle) {
 	}
 	
 	this->scaledImage=sdlCreateSurface((int)(this->image->w*65536.0*factor)>>16, (int)(this->image->h*65536.0*factor)>>16,1);
-	this->isScaled=1;
 
 	sdlLock(this->scaledImage);
 	sdlLock(this->image);
