@@ -143,9 +143,12 @@ int main (int argc, char **argv) {
 	SDL_Event event;
 	SDL_Surface *tmpnew;
 	SDL_Surface *tmpold;
-
-	if (img->scaledImage->w<SCREEN_WIDTH) {
-		drawoffset=(SCREEN_WIDTH-img->scaledImage->w)>>1;
+	
+	if (img->isScaled) {
+		if (img->scaledImage->w<SCREEN_WIDTH) 
+			drawoffset=(SCREEN_WIDTH-img->scaledImage->w)>>1;
+	} else if (img->image->w<SCREEN_WIDTH){
+			drawoffset=(SCREEN_WIDTH-img->image->w)>>1;
 	} else {
 		drawoffset=0;
 	}
@@ -226,10 +229,11 @@ int main (int argc, char **argv) {
 
 		sdlLock(screen);
 		SDL_FillRect(screen, NULL, 0);
-		if (img->scaledImage->w<SCREEN_WIDTH) {
-			img->blit(screen,(SCREEN_WIDTH-img->scaledImage->w)>>1,0);
+		if (img->isScaled) {	
+			if (img->scaledImage->w<SCREEN_WIDTH) 
+				img->blit(screen,(SCREEN_WIDTH-img->scaledImage->w)>>1,0);
 		} else {
-			img->blit(screen);
+				img->blit(screen,(SCREEN_WIDTH-img->image->w)>>1,0);
 		}
 		if (config.showFilename) ttf->render(screen, basen, 0, 240-ttf->getTextHeight());
 
@@ -253,9 +257,11 @@ int main (int argc, char **argv) {
 			tmpold=sdlCreateSurface(SCREEN_WIDTH,SCREEN_HEIGHT);
 			SDL_FillRect(tmpold,NULL,0);
 			img->blit(tmpold,drawoffset,0);
-
-			if (newimg->scaledImage->w<SCREEN_WIDTH) {
-				drawoffset=(SCREEN_WIDTH-newimg->scaledImage->w)>>1;
+			if (newimg->isScaled) {
+				if (newimg->scaledImage->w<SCREEN_WIDTH)
+					drawoffset=(SCREEN_WIDTH-newimg->scaledImage->w)>>1;
+			} else if (newimg->image->w<SCREEN_WIDTH) {
+				drawoffset=(SCREEN_WIDTH-newimg->image->w)>>1;
 			} else {
 				drawoffset=0;
 			}

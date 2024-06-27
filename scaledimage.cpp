@@ -85,57 +85,57 @@ void ScaledImage::scale(double factor, double angle) {
 	if (this->isScaled) {
 		SDL_FreeSurface(this->scaledImage);
 		this->scaledImage=NULL;
+		this->scaledImage=sdlCreateSurface((int)(this->image->w*65536.0*factor)>>16, (int)(this->image->h*65536.0*factor)>>16,1);
 	}
 	
-	this->scaledImage=sdlCreateSurface((int)(this->image->w*65536.0*factor)>>16, (int)(this->image->h*65536.0*factor)>>16,1);
-
-	sdlLock(this->scaledImage);
 	sdlLock(this->image);
-	
 	Uint16 *src=(Uint16*)this->image->pixels;
-	Uint16 *dst=(Uint16*)this->scaledImage->pixels;
 	
-	int sinfp=(int)((sin(angle)*65536.0)/factor);
-        int cosfp=(int)((cos(angle)*65536.0)/factor);
+	if (this->isScaled) {
+		sdlLock(this->scaledImage);
+		Uint16 *dst=(Uint16*)this->scaledImage->pixels;
+		
+		int sinfp=(int)((sin(angle)*65536.0)/factor);
+		int cosfp=(int)((cos(angle)*65536.0)/factor);
 
-        int xc=(this->image->w<<15) - ((this->scaledImage->w>>1)*(cosfp+sinfp));
-        int yc=(this->image->h<<15) - ((this->scaledImage->h>>1)*(cosfp-sinfp));
+		int xc=(this->image->w<<15) - ((this->scaledImage->w>>1)*(cosfp+sinfp));
+		int yc=(this->image->h<<15) - ((this->scaledImage->h>>1)*(cosfp-sinfp));
 
-        int tx,ty;
-        int x,y;
-        int tempx,tempy;
-        int lasttempx=0, lasttempy=0;
-        int colorcount;
-        int ipx,ipy;
-        Uint8 r,g,b;
-        int rsum=0,gsum=0,bsum=0;
-        Uint32 newpixel;
-        int scaledpitch=this->scaledImage->pitch>>1;
-	int imagepitch=this->image->pitch>>1;
+		int tx,ty;
+		int x,y;
+		int tempx,tempy;
+		int lasttempx=0, lasttempy=0;
+		int colorcount;
+		int ipx,ipy;
+		Uint8 r,g,b;
+		int rsum=0,gsum=0,bsum=0;
+		Uint32 newpixel;
+		int scaledpitch=this->scaledImage->pitch>>1;
+		int imagepitch=this->image->pitch>>1;
 
-        for ( y=0; y<this->scaledImage->h; y++ ) {
+		for ( y=0; y<this->scaledImage->h; y++ ) {
 
-                tx=xc;
-                ty=yc;
+				tx=xc;
+				ty=yc;
 
-                for( x=0; x<this->scaledImage->w; x++ ) {
+				for( x=0; x<this->scaledImage->w; x++ ) {
 
-                        tempx=(tx>>16);
-                        tempy=(ty>>16);
+						tempx=(tx>>16);
+						tempy=(ty>>16);
 
-                        if( (tempx<0) || (tempx>=this->image->w) || (tempy<0) || (tempy>=this->image->h) ) {
-                                *dst = 0;
-                        } else {
-                                if (
+						if( (tempx<0) || (tempx>=this->image->w) || (tempy<0) || (tempy>=this->image->h) ) {
+								*dst = 0;
+						} else {
+								if (
 					(tempx-lasttempx>0) ||
 					(tempy-lasttempy>0)
 				) {
 					rsum=0;
 					gsum=0;
 					bsum=0;
-	                                colorcount=0;
-	                                ipy=0;
-	                                for (ipy=0;ipy<(tempy-lasttempy)+1;ipy++) {
+									colorcount=0;
+									ipy=0;
+									for (ipy=0;ipy<(tempy-lasttempy)+1;ipy++) {
 						for (ipx=0;ipx<(tempx-lasttempx)+1;ipx++) {
 							SDL_GetRGB(*(src+tempx-ipx+((tempy-ipy)*imagepitch)),this->image->format,&r,&g,&b);
 							rsum+=r;
@@ -154,21 +154,21 @@ void ScaledImage::scale(double factor, double angle) {
 				} else {
 					*(dst+x+y*scaledpitch) = *(src+tempx+tempy*imagepitch);
 				}
-                        }
+						}
 
-                        tx+=cosfp;
-                        ty-=sinfp;
+						tx+=cosfp;
+						ty-=sinfp;
 
-                        lasttempx=tempx;
-                        lasttempy=tempy;
-                }
-                lasttempx=0;
-                xc+=sinfp;
-                yc+=cosfp;
-        }
-
+						lasttempx=tempx;
+						lasttempy=tempy;
+				}
+				lasttempx=0;
+				xc+=sinfp;
+				yc+=cosfp;
+			}
+		sdlUnlock(this->scaledImage);
+		}
 	sdlUnlock(this->image);
-	sdlUnlock(this->scaledImage);
 }
 
 void ScaledImage::blit(SDL_Surface *target) {
